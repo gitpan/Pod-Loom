@@ -17,7 +17,7 @@ package Pod::Loom::Template::Default;
 # ABSTRACT: Default template for Pod::Loom
 #---------------------------------------------------------------------
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use 5.008;
 use Moose;
@@ -45,7 +45,7 @@ our @sections =
    'BUGS AND LIMITATIONS',
    'AUTHOR', 'COPYRIGHT AND LICENSE', 'DISCLAIMER OF WARRANTY');
 
-has qw(+sections default) => sub { \@sections };
+sub _build_sections { \@sections };
 #---------------------------------------------------------------------
 
 
@@ -257,9 +257,9 @@ Pod::Loom::Template::Default - Default template for Pod::Loom
 
 =head1 VERSION
 
-This document describes version 0.01 of
-Pod::Loom::Template::Default, released October 11, 2009
-as part of Pod-Loom version 0.01.
+This document describes version 0.02 of
+Pod::Loom::Template::Default, released October 20, 2009
+as part of Pod-Loom version 0.02.
 
 =head1 DESCRIPTION
 
@@ -418,7 +418,7 @@ to the distribution's queue at rt.cpan.org (using the L</"dist"> attribute):
   or through the web interface at
   L<http://rt.cpan.org/Public/Bug/Report.html?Queue=<dist>>
 
-And, if C<repository> is set:
+And, if L</"repository"> is set:
 
   You can follow or contribute to <dist>'s development at
   <repository>.

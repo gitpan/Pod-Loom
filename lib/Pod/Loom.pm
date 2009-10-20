@@ -17,7 +17,7 @@ package Pod::Loom;
 # ABSTRACT: Weave pseudo-POD into real POD
 #---------------------------------------------------------------------
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use 5.008;
 use Moose;
@@ -140,9 +140,9 @@ Pod::Loom - Weave pseudo-POD into real POD
 
 =head1 VERSION
 
-This document describes version 0.01 of
-Pod::Loom, released October 11, 2009
-as part of Pod-Loom version 0.01.
+This document describes version 0.02 of
+Pod::Loom, released October 20, 2009
+as part of Pod-Loom version 0.02.
 
 =head1 WARNING
 

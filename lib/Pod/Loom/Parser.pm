@@ -17,7 +17,7 @@ package Pod::Loom::Parser;
 # ABSTRACT: Subclass Pod::Eventual for Pod::Loom
 #---------------------------------------------------------------------
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use 5.008;
 use strict;
@@ -33,10 +33,12 @@ sub new
   my ($class, $collectCommands) = @_;
 
   my %collect = map { $_ => [] } @$collectCommands;
+  my %groups  = map { $_ => {} } @$collectCommands;
 
   bless {
     collect => \%collect,
     dest    => undef,
+    groups  => \%groups,
   }, $class;
 } # end new
 
@@ -53,6 +55,11 @@ sub handle_event
 
     # See if this changes the output location:
     my $collector = $self->{collect}{ $cmd };
+
+    if (not $collector and $cmd =~ /^(\w+)-(\S+)/ and $self->{collect}{$1}) {
+      $collector = $self->{collect}{$cmd} = [];
+      $self->{groups}{$1}{$2} = 1;
+    } # end if new group
 
     # Special handling for Pod::Loom sections:
     if ($cmd =~ /^(begin|for)$/ and
@@ -101,6 +108,10 @@ sub handle_blank
 
 
 sub collected { shift->{collect} }
+#---------------------------------------------------------------------
+
+
+sub groups { shift->{groups} }
 
 #=====================================================================
 # Package Return Value:
@@ -115,9 +126,9 @@ Pod::Loom::Parser - Subclass Pod::Eventual for Pod::Loom
 
 =head1 VERSION
 
-This document describes version 0.01 of
-Pod::Loom::Parser, released October 11, 2009
-as part of Pod-Loom version 0.01.
+This document describes version 0.02 of
+Pod::Loom::Parser, released October 20, 2009
+as part of Pod-Loom version 0.02.
 
 =head1 SYNOPSIS
 
@@ -170,6 +181,25 @@ be an empty arrayref.
 
 In addition, any POD targeted to a format matching C</^Pod::Loom\b/>
 will be collected under the format name.
+
+
+=head2 groups
+
+  $hashRef = $parser->groups;
+
+This returns a hashref with one entry for each of the
+C<@collect_commands>.  Each value is a hashref whose keys are the
+categories used with that command.  For example, if C<attr> was a
+collected command, and the document contained these entries:
+
+  =attr-foo attr1
+  =attr-bar attr2
+  =attr-foo attr3
+  =attr attr4
+
+then C<< keys %{ $parser->groups->{attr} } >> would return C<bar> and
+C<foo>.  (The C<=attr> without a category does not get an entry in
+this hash.)
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
