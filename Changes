@@ -1,5 +1,13 @@
 Revision history for Pod-Loom
 
+0.03   March 6, 2010
+	- If the template returns no POD, don't add a =cut
+	- Include filename in error messages and warnings
+	  Added the error & warning methods to Template
+	- Added SUBROUTINES section to Template::Default
+	- Use \xA0 instead of S<> with C<>
+	  (search.cpan.org's pod2html doesn't seem to like S<C<>>)
+
 0.02   October 20, 2009
 	- INCOMPATIBLE CHANGE
 	  Templates should now provide a _build_sections method

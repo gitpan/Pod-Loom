@@ -17,9 +17,10 @@ package Pod::Loom::Parser;
 # ABSTRACT: Subclass Pod::Eventual for Pod::Loom
 #---------------------------------------------------------------------
 
-our $VERSION = '0.02';
-
 use 5.008;
+our $VERSION = '0.03';
+# This file is part of Pod-Loom 0.03 (March 6, 2010)
+
 use strict;
 use warnings;
 
@@ -126,9 +127,9 @@ Pod::Loom::Parser - Subclass Pod::Eventual for Pod::Loom
 
 =head1 VERSION
 
-This document describes version 0.02 of
-Pod::Loom::Parser, released October 20, 2009
-as part of Pod-Loom version 0.02.
+This document describes version 0.03 of
+Pod::Loom::Parser, released March 6, 2010
+as part of Pod-Loom version 0.03.
 
 =head1 SYNOPSIS
 
@@ -219,10 +220,10 @@ No bugs have been reported.
 
 =head1 AUTHOR
 
-Christopher J. Madsen  S<< C<< <perl AT cjmweb.net> >> >>
+Christopher J. Madsen  C<< <perl AT cjmweb.net> >>
 
 Please report any bugs or feature requests to
-S<< C<< <bug-Pod-Loom AT rt.cpan.org> >> >>,
+C<< <bug-Pod-Loom AT rt.cpan.org> >>,
 or through the web interface at
 L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
 
@@ -231,7 +232,7 @@ L<< http://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Christopher J. Madsen.
+This software is copyright (c) 2010 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

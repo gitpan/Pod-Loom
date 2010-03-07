@@ -17,9 +17,10 @@ package Pod::Loom::Template::Default;
 # ABSTRACT: Default template for Pod::Loom
 #---------------------------------------------------------------------
 
-our $VERSION = '0.02';
-
 use 5.008;
+our $VERSION = '0.03';
+# This file is part of Pod-Loom 0.03 (March 6, 2010)
+
 use Moose;
 extends 'Pod::Loom::Template';
 
@@ -30,16 +31,18 @@ use Pod::Loom::Template '%E';
 has qw(sort_attr   is ro), isa => 'Int | ArrayRef[Str]';
 has qw(sort_diag   is ro), isa => 'Int | ArrayRef[Str]';
 has qw(sort_method is ro), isa => 'Int | ArrayRef[Str]';
+has qw(sort_sub    is ro), isa => 'Int | ArrayRef[Str]';
 
 sub collect_commands
 {
-  [ qw(head1 attr method diag) ];
+  [ qw(head1 attr method sub diag) ];
 } # end collect_commands
 
 #---------------------------------------------------------------------
 # Don't forget to update DESCRIPTION and sort_method if changing this:
 our @sections =
-  (qw(NAME VERSION SYNOPSIS DESCRIPTION ATTRIBUTES METHODS * DIAGNOSTICS),
+  (qw(NAME VERSION SYNOPSIS DESCRIPTION ATTRIBUTES METHODS SUBROUTINES
+      * DIAGNOSTICS),
    'CONFIGURATION AND ENVIRONMENT',
    qw(DEPENDENCIES INCOMPATIBILITIES),
    'BUGS AND LIMITATIONS',
@@ -100,13 +103,24 @@ sub section_METHODS
 } # end section_METHODS
 
 #---------------------------------------------------------------------
+
+
+sub section_SUBROUTINES
+{
+  my $self = shift;
+
+  $self->joined_section(sub => 'head2', @_);
+} # end section_SUBROUTINES
+
+#---------------------------------------------------------------------
 sub override_section
 {
   my ($self, $title) = @_;
 
   return ($title eq 'ATTRIBUTES' or
           $title eq 'DIAGNOSTICS' or
-          $title eq 'METHODS');
+          $title eq 'METHODS' or
+          $title eq 'SUBROUTINES');
 } # end override_section
 #---------------------------------------------------------------------
 
@@ -168,8 +182,8 @@ sub section_AUTHOR
   foreach my $authorCredit (@$authors) {
     if ($authorCredit =~ /(.*\S)\s*(<.*>)$/) {
       my ($author, $email) = ($1, $2);
-      $email =~ s/@/ AT /g;
-      $pod .= "$author  S<< C<< $email >> >>\n";
+      $email =~ s/@/\x{A0}AT\x{A0}/g;
+      $pod .= "$author  C<< $email >>\n";
     } else {
       $pod .= "$authorCredit\n";
     }
@@ -178,7 +192,7 @@ sub section_AUTHOR
   $pod .= <<"END AUTHOR";
 
 Please report any bugs or feature requests to
-S<< C<< <bug-$dist AT rt.cpan.org> >> >>,
+C<< <bug-$dist\x{A0}AT\x{A0}rt.cpan.org> >>,
 or through the web interface at
 L<http://rt.cpan.org/Public/Bug/Report.html?Queue=$dist>
 END AUTHOR
@@ -257,9 +271,9 @@ Pod::Loom::Template::Default - Default template for Pod::Loom
 
 =head1 VERSION
 
-This document describes version 0.02 of
-Pod::Loom::Template::Default, released October 20, 2009
-as part of Pod-Loom version 0.02.
+This document describes version 0.03 of
+Pod::Loom::Template::Default, released March 6, 2010
+as part of Pod-Loom version 0.03.
 
 =head1 DESCRIPTION
 
@@ -272,6 +286,7 @@ It places the sections in this order:
      DESCRIPTION
   ++ ATTRIBUTES
   ++ METHODS
+  ++ SUBROUTINES
      *
   ++ DIAGNOSTICS
   +  CONFIGURATION AND ENVIRONMENT
@@ -345,6 +360,11 @@ Just like C<sort_attr>, but for diagnostic messages.
 Just like C<sort_attr>, but for methods.
 
 
+=head2 sort_sub
+
+Just like C<sort_attr>, but for subroutines.
+
+
 =head2 version
 
 The version number of the module.  Used by VERSION.
@@ -385,6 +405,11 @@ attributes, no ATTRIBUTES section will be added.
 This is just like ATTRIBUTES, except it gathers C<=method> entries.
 
 
+=head2 section_SUBROUTINES
+
+This is just like ATTRIBUTES, except it gathers C<=sub> entries.
+
+
 =head2 section_DIAGNOSTICS
 
 If the original document contains any C<=diag> commands, they will be
@@ -414,7 +439,7 @@ First, it lists the authors from the L</"authors"> attribute
 to the distribution's queue at rt.cpan.org (using the L</"dist"> attribute):
 
   Please report any bugs or feature requests to
-  S<< C<< <bug-<dist> AT rt.cpan.org> >> >>,
+  C<< <bug-<dist> AT rt.cpan.org> >>,
   or through the web interface at
   L<http://rt.cpan.org/Public/Bug/Report.html?Queue=<dist>>
 
@@ -447,10 +472,10 @@ No bugs have been reported.
 
 =head1 AUTHOR
 
-Christopher J. Madsen  S<< C<< <perl AT cjmweb.net> >> >>
+Christopher J. Madsen  C<< <perl AT cjmweb.net> >>
 
 Please report any bugs or feature requests to
-S<< C<< <bug-Pod-Loom AT rt.cpan.org> >> >>,
+C<< <bug-Pod-Loom AT rt.cpan.org> >>,
 or through the web interface at
 L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
 
@@ -459,7 +484,7 @@ L<< http://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Christopher J. Madsen.
+This software is copyright (c) 2010 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

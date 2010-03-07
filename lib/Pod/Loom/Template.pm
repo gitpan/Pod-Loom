@@ -17,9 +17,10 @@ package Pod::Loom::Template;
 # ABSTRACT: Standard base class for Pod::Loom templates
 #---------------------------------------------------------------------
 
-our $VERSION = '0.02';
-
 use 5.008;
+our $VERSION = '0.03';
+# This file is part of Pod-Loom 0.03 (March 6, 2010)
+
 use Moose;
 
 use Pod::Loom::Parser ();
@@ -54,6 +55,33 @@ tie %E, 'Pod::Loom::_Interpolation', sub { $_[0] }; # eval
 
 use Exporter 'import';
 our @EXPORT_OK = qw(%E);
+
+#---------------------------------------------------------------------
+has _tmp_warned => (
+  is       => 'rw',
+  isa      => 'Bool',
+);
+
+
+sub warning
+{
+  my ($self, $message) = @_;
+
+  unless ($self->_tmp_warned) {
+    warn "While processing " . $self->tmp_filename . "\n";
+    $self->_tmp_warned(1);
+  }
+
+  warn "  $message";
+} # end warning
+
+
+sub error
+{
+  my ($self, $message) = @_;
+
+  die 'Error procesing ' . $self->tmp_filename . "\n  $message";
+} # end error
 
 #---------------------------------------------------------------------
 # These methods are likely to be overloaded in subclasses:
@@ -115,7 +143,7 @@ sub _insert_sections
 
     next unless @list;
 
-    die "Can't insert $type nonexistent section $list[$index]"
+    $self->error("Can't insert $type nonexistent section $list[$index]")
         unless grep { $_ eq $list[$index] } @$sectionsList;
 
 
@@ -141,7 +169,7 @@ sub required_attr
     my $v = $self->$_;
     defined $v
         ? $v
-        : die "The $section section requires you to set `$_'\n"
+        : $self->error("The $section section requires you to set `$_'\n")
   } @_;
 } # end required_attr
 
@@ -200,6 +228,13 @@ sub _find_sort_order
 
   # First, see if the document specifies the sort order:
   my $blocks = $self->tmp_collected->{"Pod::Loom-sort_$type"};
+
+  if ($self->tmp_collected->{"Pod::Loom-no_sort_$type"}) {
+    $self->error("You used both no_sort_$type and sort_$type\n")
+        if $blocks;
+
+    return;
+  } # end if document says no sorting
 
   if ($blocks) {
     my @sortFirst;
@@ -268,7 +303,8 @@ sub collect_sections
   my %section;
 
   foreach my $h (@$heads) {
-    $h =~ /^=head1\s+(.+?)(?=\n*\z|\n\n)/ or die "Can't find heading in $h";
+    $h =~ /^=head1\s+(.+?)(?=\n*\z|\n\n)/
+        or $self->error("Can't find heading in $h");
     my $title = $1;
 
     if ($expectedSection{$title}) {
@@ -362,7 +398,7 @@ sub join_entries
   $pod .= "\n=over\n" if $newcmd eq 'item';
 
   foreach (@$entries) {
-    s/^=\S+/=$newcmd/ or die "Bad entry $_";
+    s/^=\S+/=$newcmd/ or $self->error("Bad entry $_");
     $pod .= "\n$_";
   } # end foreach
 
@@ -400,7 +436,7 @@ sub _join_groups
 
   foreach my $header (@$groupHeaders) {
     $header =~ s/^\s*(\S+)\s*?\n//
-        or die "No category in Pod::Loom-group_$cmd\n$header";
+        or $self->error("No category in Pod::Loom-group_$cmd\n$header");
 
 
     my $type = $1;
@@ -412,7 +448,7 @@ sub _join_groups
     }
 
     unless (delete $groups->{$type}) {
-      warn "No entries for =$cmd-$type";
+      $self->warning("No entries for =$cmd-$type");
       next;
     }
 
@@ -422,11 +458,11 @@ sub _join_groups
   } # end foreach $header in @$groupHeaders
 
   if (%$groups) {
-    warn "You used =$cmd, but had no Pod::Loom-group_$cmd * section\n"
+    $self->warning("You used =$cmd, but had no Pod::Loom-group_$cmd * section\n")
         if delete $groups->{''};
 
 
-    warn "You used =$cmd-$_, but had no Pod::Loom-group_$cmd $_ section\n"
+    $self->warning("You used =$cmd-$_, but had no Pod::Loom-group_$cmd $_ section\n")
         for sort keys %$groups;
 
     die "Terminating because of errors\n";
@@ -450,9 +486,9 @@ Pod::Loom::Template - Standard base class for Pod::Loom templates
 
 =head1 VERSION
 
-This document describes version 0.02 of
-Pod::Loom::Template, released October 20, 2009
-as part of Pod-Loom version 0.02.
+This document describes version 0.03 of
+Pod::Loom::Template, released March 6, 2010
+as part of Pod-Loom version 0.03.
 
 =head1 DESCRIPTION
 
@@ -620,6 +656,14 @@ Any sections that appeared in the original document but are not in
 C<$section_list> are concatenated to form the C<*> section.
 
 
+=head2 error
+
+  $tmp->error($message);
+
+This method calls Perl's C<die> builtin with the C<$message> after
+prepending the filename to it.
+
+
 =head2 expect_sections
 
   $section_titles = $tmp->expect_sections;
@@ -773,6 +817,14 @@ If any attribute is C<undef>, dies with a message that
 C<$section_title> requires that attribute.
 
 
+=head2 warning
+
+  $tmp->warning($message);
+
+This method calls Perl's C<warn> builtin with the C<$message>.  If
+this is the first warning, it first prints a warning with the filename.
+
+
 =head2 weave
 
   $new_pod = $tmp->weave(\$old_pod, $filename);
@@ -877,10 +929,10 @@ No bugs have been reported.
 
 =head1 AUTHOR
 
-Christopher J. Madsen  S<< C<< <perl AT cjmweb.net> >> >>
+Christopher J. Madsen  C<< <perl AT cjmweb.net> >>
 
 Please report any bugs or feature requests to
-S<< C<< <bug-Pod-Loom AT rt.cpan.org> >> >>,
+C<< <bug-Pod-Loom AT rt.cpan.org> >>,
 or through the web interface at
 L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
 
@@ -889,7 +941,7 @@ L<< http://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Christopher J. Madsen.
+This software is copyright (c) 2010 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
