@@ -19,7 +19,7 @@ package Pod::Loom::Parser;
 
 use 5.008;
 our $VERSION = '0.03';
-# This file is part of Pod-Loom 0.03 (March 6, 2010)
+# This file is part of Pod-Loom 0.04 (December 11, 2010)
 
 use strict;
 use warnings;
@@ -128,8 +128,8 @@ Pod::Loom::Parser - Subclass Pod::Eventual for Pod::Loom
 =head1 VERSION
 
 This document describes version 0.03 of
-Pod::Loom::Parser, released March 6, 2010
-as part of Pod-Loom version 0.03.
+Pod::Loom::Parser, released December 11, 2010
+as part of Pod-Loom version 0.04.
 
 =head1 SYNOPSIS
 
@@ -220,10 +220,10 @@ No bugs have been reported.
 
 =head1 AUTHOR
 
-Christopher J. Madsen  C<< <perl AT cjmweb.net> >>
+Christopher J. Madsen  S<C<< <perl AT cjmweb.net> >>>
 
 Please report any bugs or feature requests to
-C<< <bug-Pod-Loom AT rt.cpan.org> >>,
+S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>,
 or through the web interface at
 L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
 

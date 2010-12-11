@@ -18,8 +18,8 @@ package Pod::Loom::Template::Default;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.03';
-# This file is part of Pod-Loom 0.03 (March 6, 2010)
+our $VERSION = '0.04';
+# This file is part of Pod-Loom 0.04 (December 11, 2010)
 
 use Moose;
 extends 'Pod::Loom::Template';
@@ -182,8 +182,8 @@ sub section_AUTHOR
   foreach my $authorCredit (@$authors) {
     if ($authorCredit =~ /(.*\S)\s*(<.*>)$/) {
       my ($author, $email) = ($1, $2);
-      $email =~ s/@/\x{A0}AT\x{A0}/g;
-      $pod .= "$author  C<< $email >>\n";
+      $email =~ s/@/ AT /g;
+      $pod .= "$author  S<C<< $email >>>\n";
     } else {
       $pod .= "$authorCredit\n";
     }
@@ -192,7 +192,7 @@ sub section_AUTHOR
   $pod .= <<"END AUTHOR";
 
 Please report any bugs or feature requests to
-C<< <bug-$dist\x{A0}AT\x{A0}rt.cpan.org> >>,
+S<C<< <bug-$dist AT rt.cpan.org> >>>,
 or through the web interface at
 L<http://rt.cpan.org/Public/Bug/Report.html?Queue=$dist>
 END AUTHOR
@@ -271,9 +271,9 @@ Pod::Loom::Template::Default - Default template for Pod::Loom
 
 =head1 VERSION
 
-This document describes version 0.03 of
-Pod::Loom::Template::Default, released March 6, 2010
-as part of Pod-Loom version 0.03.
+This document describes version 0.04 of
+Pod::Loom::Template::Default, released December 11, 2010
+as part of Pod-Loom version 0.04.
 
 =head1 DESCRIPTION
 
@@ -439,7 +439,7 @@ First, it lists the authors from the L</"authors"> attribute
 to the distribution's queue at rt.cpan.org (using the L</"dist"> attribute):
 
   Please report any bugs or feature requests to
-  C<< <bug-<dist> AT rt.cpan.org> >>,
+  S<C<< <bug-<dist> AT rt.cpan.org> >>>,
   or through the web interface at
   L<http://rt.cpan.org/Public/Bug/Report.html?Queue=<dist>>
 
@@ -472,10 +472,10 @@ No bugs have been reported.
 
 =head1 AUTHOR
 
-Christopher J. Madsen  C<< <perl AT cjmweb.net> >>
+Christopher J. Madsen  S<C<< <perl AT cjmweb.net> >>>
 
 Please report any bugs or feature requests to
-C<< <bug-Pod-Loom AT rt.cpan.org> >>,
+S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>,
 or through the web interface at
 L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
 

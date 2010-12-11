@@ -18,8 +18,8 @@ package Pod::Loom;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.03';
-# This file is part of Pod-Loom 0.03 (March 6, 2010)
+our $VERSION = '0.04';
+# This file is part of Pod-Loom 0.04 (December 11, 2010)
 
 use Moose;
 use Carp qw(croak);
@@ -142,9 +142,9 @@ Pod::Loom - Weave pseudo-POD into real POD
 
 =head1 VERSION
 
-This document describes version 0.03 of
-Pod::Loom, released March 6, 2010
-as part of Pod-Loom version 0.03.
+This document describes version 0.04 of
+Pod::Loom, released December 11, 2010
+as part of Pod-Loom version 0.04.
 
 =head1 WARNING
 
@@ -273,10 +273,10 @@ No bugs have been reported.
 
 =head1 AUTHOR
 
-Christopher J. Madsen  C<< <perl AT cjmweb.net> >>
+Christopher J. Madsen  S<C<< <perl AT cjmweb.net> >>>
 
 Please report any bugs or feature requests to
-C<< <bug-Pod-Loom AT rt.cpan.org> >>,
+S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>,
 or through the web interface at
 L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
 
