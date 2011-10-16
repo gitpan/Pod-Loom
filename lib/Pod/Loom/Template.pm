@@ -18,8 +18,8 @@ package Pod::Loom::Template;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.03';
-# This file is part of Pod-Loom 0.04 (December 11, 2010)
+our $VERSION = '0.05';
+# This file is part of Pod-Loom 0.05 (October 15, 2011)
 
 use Moose;
 
@@ -29,6 +29,11 @@ use Pod::Loom::Parser ();
 has tmp_collected => (
   is       => 'rw',
   isa      => 'HashRef[ArrayRef]',
+);
+
+has tmp_encoding => (
+  is       => 'rw',
+  isa      => 'Object',
 );
 
 has tmp_groups => (
@@ -277,6 +282,7 @@ sub parse_pod
   my $pe = Pod::Loom::Parser->new( $self->collect_commands );
   $pe->read_string($$podRef);
   $self->tmp_collected( $pe->collected );
+  $self->tmp_encoding(  $pe->encoding  );
   $self->tmp_groups(    $pe->groups    );
 } # end parse_pod
 #---------------------------------------------------------------------
@@ -341,6 +347,14 @@ sub generate_pod
     # Make sure the document ends with a blank line:
     $pod =~ s/\n*\z/\n\n/ if $pod;
   } # end foreach $title in @$sectionList
+
+  my $encoding = $self->tmp_encoding;
+  if (length $pod) {
+    $pod = $encoding->encode($pod);
+    my $name = $encoding->name;
+    $pod = "=encoding " . $encoding->encode($name) . "\n\n$pod"
+        unless $name eq 'iso-8859-1';
+  }
 
   $pod;
 } # end generate_pod
@@ -486,9 +500,9 @@ Pod::Loom::Template - Standard base class for Pod::Loom templates
 
 =head1 VERSION
 
-This document describes version 0.03 of
-Pod::Loom::Template, released December 11, 2010
-as part of Pod-Loom version 0.04.
+This document describes version 0.05 of
+Pod::Loom::Template, released October 15, 2011
+as part of Pod-Loom version 0.05.
 
 =head1 DESCRIPTION
 
@@ -931,17 +945,17 @@ No bugs have been reported.
 
 Christopher J. Madsen  S<C<< <perl AT cjmweb.net> >>>
 
-Please report any bugs or feature requests to
-S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>,
+Please report any bugs or feature requests
+to S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>
 or through the web interface at
-L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
+L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom >>.
 
 You can follow or contribute to Pod-Loom's development at
 L<< http://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Christopher J. Madsen.
+This software is copyright (c) 2011 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

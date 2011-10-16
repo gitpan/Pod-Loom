@@ -18,10 +18,10 @@ package Pod::Loom;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.04';
-# This file is part of Pod-Loom 0.04 (December 11, 2010)
+our $VERSION = '0.05';
+# This file is part of Pod-Loom 0.05 (October 15, 2011)
 
-use Moose;
+use Moose 0.65; # attr fulfills requires
 use Carp qw(croak);
 use PPI ();
 use String::RewritePrefix ();
@@ -142,9 +142,9 @@ Pod::Loom - Weave pseudo-POD into real POD
 
 =head1 VERSION
 
-This document describes version 0.04 of
-Pod::Loom, released December 11, 2010
-as part of Pod-Loom version 0.04.
+This document describes version 0.05 of
+Pod::Loom, released October 15, 2011
+as part of Pod-Loom version 0.05.
 
 =head1 WARNING
 
@@ -204,7 +204,11 @@ defaults to C<Default> (meaning L<Pod::Loom::Template::Default>).
 This method does all the work (see L</"DESCRIPTION">).  You pass it a
 reference to a string containing Perl code mixed with POD.  (This
 string is not modified.)  It returns a new string containing the
-reformatted POD moved to the end of the code.
+reformatted POD moved to the end of the code.  C<$doc> should contain
+raw bytes (i.e. UTF8 flag off).  If C<$doc> is encoded in something
+other than Latin-1, it must contain an C<=encoding> directive
+specifying the encoding.  C<$new_doc> will likewise contain raw bytes
+in the same encoding as C<$doc>.
 
 The C<$filename> is used for error messages.  It does not need to
 actually exist on disk.
@@ -275,17 +279,17 @@ No bugs have been reported.
 
 Christopher J. Madsen  S<C<< <perl AT cjmweb.net> >>>
 
-Please report any bugs or feature requests to
-S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>,
+Please report any bugs or feature requests
+to S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>
 or through the web interface at
-L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
+L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom >>.
 
 You can follow or contribute to Pod-Loom's development at
 L<< http://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Christopher J. Madsen.
+This software is copyright (c) 2011 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

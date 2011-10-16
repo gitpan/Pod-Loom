@@ -1,5 +1,9 @@
 Revision history for Pod-Loom
 
+0.05   October 15, 2011
+	- Handle =encoding directive
+	- Added bugtracker attribute to Template::Default
+
 0.04   December 11, 2010
 	- Use S<C<< >>> instead of \xA0
 	  (It's S<< C<< >> >> that Pod::Simple misinterprets.)

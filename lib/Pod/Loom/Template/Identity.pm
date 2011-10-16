@@ -19,7 +19,7 @@ package Pod::Loom::Template::Identity;
 
 use 5.008;
 our $VERSION = '0.03';
-# This file is part of Pod-Loom 0.04 (December 11, 2010)
+# This file is part of Pod-Loom 0.05 (October 15, 2011)
 
 use strict;
 use warnings;
@@ -53,8 +53,8 @@ Pod::Loom::Template::Identity - Do-nothing template for Pod::Loom
 =head1 VERSION
 
 This document describes version 0.03 of
-Pod::Loom::Template::Identity, released December 11, 2010
-as part of Pod-Loom version 0.04.
+Pod::Loom::Template::Identity, released October 15, 2011
+as part of Pod-Loom version 0.05.
 
 =head1 DESCRIPTION
 
@@ -94,17 +94,17 @@ No bugs have been reported.
 
 Christopher J. Madsen  S<C<< <perl AT cjmweb.net> >>>
 
-Please report any bugs or feature requests to
-S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>,
+Please report any bugs or feature requests
+to S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>
 or through the web interface at
-L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
+L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom >>.
 
 You can follow or contribute to Pod-Loom's development at
 L<< http://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Christopher J. Madsen.
+This software is copyright (c) 2011 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

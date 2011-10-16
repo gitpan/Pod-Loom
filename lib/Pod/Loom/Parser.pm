@@ -18,12 +18,13 @@ package Pod::Loom::Parser;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.03';
-# This file is part of Pod-Loom 0.04 (December 11, 2010)
+our $VERSION = '0.05';
+# This file is part of Pod-Loom 0.05 (October 15, 2011)
 
 use strict;
 use warnings;
 
+use Encode qw(find_encoding);
 use Pod::Eventual ();
 our @ISA = qw(Pod::Eventual);
 #---------------------------------------------------------------------
@@ -44,6 +45,27 @@ sub new
 } # end new
 
 #---------------------------------------------------------------------
+sub _handle_encoding
+{
+  my ($self, $event) = @_;
+
+  my $encoding = $event->{content};
+
+  $encoding =~ s/^\s+//;
+  $encoding =~ s/\s+\z//;
+
+  my $e = find_encoding($encoding)
+      or die "Invalid =encoding $encoding at line $event->{start_line}\n";
+
+  if (defined $self->{encoding}) {
+    return if $e->name eq $self->{encoding}->name;
+    die "Conflicting =encoding directive at line $event->{start_line}\n";
+  }
+
+  $self->{encoding} = $e;
+} # end _handle_encoding
+
+#---------------------------------------------------------------------
 sub handle_event
 {
   my ($self, $event) = @_;
@@ -53,6 +75,8 @@ sub handle_event
   if ($event->{type} eq 'command') {
     my $cmd = $event->{command};
     return if $cmd eq 'cut';
+
+    return $self->_handle_encoding($event) if $cmd eq 'encoding';
 
     # See if this changes the output location:
     my $collector = $self->{collect}{ $cmd };
@@ -83,7 +107,7 @@ sub handle_event
       push @$collector, '';
       $dest = $self->{dest} = \$collector->[-1];
     } else {
-      die "=$cmd used too soon\n" unless $dest;
+      die "=$cmd used too soon at line $event->{start_line}\n" unless $dest;
     }
 
     if ($cmd) {
@@ -104,11 +128,32 @@ sub handle_blank
     $event->{type} = 'text';
     $self->handle_event($event);
   }
-} # end handle_event
+} # end handle_blank
 #---------------------------------------------------------------------
 
 
-sub collected { shift->{collect} }
+sub collected
+{
+  my ($self) = @_;
+
+  my $collected = $self->{collect};
+  my $encoding  = $self->{encoding} ||= find_encoding('iso-8859-1');
+
+  unless ($self->{collect_decoded}++) {
+    for my $array (values %$collected) {
+      for my $value (@$array) {
+        $value = $encoding->decode($value);
+      }
+    }
+  }
+
+  $collected;
+} # end collected
+
+#---------------------------------------------------------------------
+
+
+sub encoding { shift->{encoding} ||= find_encoding('iso-8859-1') }
 #---------------------------------------------------------------------
 
 
@@ -127,9 +172,9 @@ Pod::Loom::Parser - Subclass Pod::Eventual for Pod::Loom
 
 =head1 VERSION
 
-This document describes version 0.03 of
-Pod::Loom::Parser, released December 11, 2010
-as part of Pod-Loom version 0.04.
+This document describes version 0.05 of
+Pod::Loom::Parser, released October 15, 2011
+as part of Pod-Loom version 0.05.
 
 =head1 SYNOPSIS
 
@@ -184,6 +229,15 @@ In addition, any POD targeted to a format matching C</^Pod::Loom\b/>
 will be collected under the format name.
 
 
+=head2 encoding
+
+  $encoding = $parser->encoding;
+
+This returns the encoding that was used for the document as an
+L<Encode> object.  If no encoding was explicitly defined, then the
+default Latin-1 encoding is returned.
+
+
 =head2 groups
 
   $hashRef = $parser->groups;
@@ -222,17 +276,17 @@ No bugs have been reported.
 
 Christopher J. Madsen  S<C<< <perl AT cjmweb.net> >>>
 
-Please report any bugs or feature requests to
-S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>,
+Please report any bugs or feature requests
+to S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>
 or through the web interface at
-L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
+L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom >>.
 
 You can follow or contribute to Pod-Loom's development at
 L<< http://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Christopher J. Madsen.
+This software is copyright (c) 2011 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

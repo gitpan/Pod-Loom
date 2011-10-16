@@ -18,8 +18,8 @@ package Pod::Loom::Template::Default;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.04';
-# This file is part of Pod-Loom 0.04 (December 11, 2010)
+our $VERSION = '0.05';
+# This file is part of Pod-Loom 0.05 (October 15, 2011)
 
 use Moose;
 extends 'Pod::Loom::Template';
@@ -169,6 +169,7 @@ sub section_BUGS_AND_LIMITATIONS
 
 has qw(dist    is ro  isa Str);
 has qw(authors is ro  isa ArrayRef[Str]);
+has qw(bugtracker is ro  isa Maybe[HashRef]);
 has qw(repository is ro  isa Maybe[Str]);
 
 sub section_AUTHOR
@@ -189,13 +190,25 @@ sub section_AUTHOR
     }
   } # end foreach $authorCredit in @$authors
 
-  $pod .= <<"END AUTHOR";
+  my $bugs = $self->bugtracker || {
+    mailto => "bug-$dist\@rt.cpan.org",
+    web    => "http://rt.cpan.org/Public/Bug/Report.html?Queue=$dist",
+  };
 
-Please report any bugs or feature requests to
-S<C<< <bug-$dist AT rt.cpan.org> >>>,
-or through the web interface at
-L<http://rt.cpan.org/Public/Bug/Report.html?Queue=$dist>
-END AUTHOR
+  if (my $mailto = $bugs->{mailto} or $bugs->{web}) {
+    $pod .= "\nPlease report any bugs or feature requests\n";
+
+    if ($mailto) {
+      $mailto =~ s/@/ AT /g;
+      $pod .= "to S<C<< <$mailto> >>>";
+    }
+
+    if ($bugs->{web}) {
+      $pod .= "\nor " if $mailto;
+      $pod .= "through the web interface at\nL<< $bugs->{web} >>";
+    }
+    $pod .= ".\n";
+  } # end if bugtracker
 
   my $repo = $self->repository;
   if ($repo) {
@@ -271,9 +284,9 @@ Pod::Loom::Template::Default - Default template for Pod::Loom
 
 =head1 VERSION
 
-This document describes version 0.04 of
-Pod::Loom::Template::Default, released December 11, 2010
-as part of Pod-Loom version 0.04.
+This document describes version 0.05 of
+Pod::Loom::Template::Default, released October 15, 2011
+as part of Pod-Loom version 0.05.
 
 =head1 DESCRIPTION
 
@@ -316,6 +329,13 @@ The abstract for the module.  Required by NAME.
 
 An arrayref of author names (with optional email address in C<< <> >>).
 Required by AUTHOR.
+
+
+=head2 bugtracker
+
+An optional hashref giving the location of the distribution's public
+bugtracker.  If not specified, defaults to the CPAN RT.  If present,
+may have keys C<web> and C<mailto>.
 
 
 =head2 dist
@@ -474,17 +494,17 @@ No bugs have been reported.
 
 Christopher J. Madsen  S<C<< <perl AT cjmweb.net> >>>
 
-Please report any bugs or feature requests to
-S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>,
+Please report any bugs or feature requests
+to S<C<< <bug-Pod-Loom AT rt.cpan.org> >>>
 or through the web interface at
-L<http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom>
+L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom >>.
 
 You can follow or contribute to Pod-Loom's development at
 L<< http://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Christopher J. Madsen.
+This software is copyright (c) 2011 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
