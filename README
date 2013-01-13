@@ -1,4 +1,4 @@
-Pod-Loom version 0.05, released October 15, 2011
+Pod-Loom version 0.06, released January 12, 2013
 
 
 Pod::Loom extracts all the POD sections from Perl code, passes the POD
@@ -22,7 +22,7 @@ DEPENDENCIES
 
   Package                Minimum Version
   ---------------------- ---------------
-  perl                    5.008
+  perl                    5.8.0
   Carp                    
   Encode                  
   Exporter                
@@ -35,17 +35,16 @@ DEPENDENCIES
 
 
 CHANGES
-    Here's what's new in version 0.05 of Pod-Loom:
+    Here's what's new in version 0.06 of Pod-Loom:
     (See the file "Changes" for the full revision history.)
 
-	- Handle =encoding directive
-	- Added bugtracker attribute to Template::Default
+	- Don't insert __END__ if a file contains only POD
 
 
 
 COPYRIGHT AND LICENCE
 
-This software is copyright (c) 2011 by Christopher J. Madsen.
+This software is copyright (c) 2013 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

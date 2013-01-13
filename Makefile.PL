@@ -12,8 +12,7 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "Weave pseudo-POD into real POD",
   "AUTHOR" => "Christopher J. Madsen <perl\@cjmweb.net>",
   "BUILD_REQUIRES" => {
-    "Test::More" => "0.88",
-    "utf8" => 0
+    "Test::More" => "0.88"
   },
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
@@ -32,7 +31,7 @@ my %WriteMakefileArgs = (
     "Pod::Eventual" => 0,
     "String::RewritePrefix" => 0
   },
-  "VERSION" => "0.05",
+  "VERSION" => "0.06",
   "test" => {
     "TESTS" => "t/*.t"
   }
