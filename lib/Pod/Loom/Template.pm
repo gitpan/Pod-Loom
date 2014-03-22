@@ -18,8 +18,8 @@ package Pod::Loom::Template;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.05';
-# This file is part of Pod-Loom 0.06 (January 12, 2013)
+our $VERSION = '0.07';
+# This file is part of Pod-Loom 0.07 (March 22, 2014)
 
 use Moose;
 
@@ -280,7 +280,12 @@ sub parse_pod
   my ($self, $podRef) = @_;
 
   my $pe = Pod::Loom::Parser->new( $self->collect_commands );
-  $pe->read_string($$podRef);
+  # We can't use read_string, because that treats the string as
+  # encoded in UTF-8, for which some byte sequences aren't valid.
+  # Pod::Loom::Parser will determine the actual encoding.
+  open my $handle, '<:encoding(iso-8859-1)', $podRef
+      or die "error opening string for reading: $!";
+  $pe->read_handle($handle);
   $self->tmp_collected( $pe->collected );
   $self->tmp_encoding(  $pe->encoding  );
   $self->tmp_groups(    $pe->groups    );
@@ -500,9 +505,9 @@ Pod::Loom::Template - Standard base class for Pod::Loom templates
 
 =head1 VERSION
 
-This document describes version 0.05 of
-Pod::Loom::Template, released January 12, 2013
-as part of Pod-Loom version 0.06.
+This document describes version 0.07 of
+Pod::Loom::Template, released March 22, 2014
+as part of Pod-Loom version 0.07.
 
 =head1 DESCRIPTION
 
@@ -951,11 +956,11 @@ or through the web interface at
 L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom >>.
 
 You can follow or contribute to Pod-Loom's development at
-L<< http://github.com/madsen/pod-loom >>.
+L<< https://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Christopher J. Madsen.
+This software is copyright (c) 2014 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

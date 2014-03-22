@@ -18,8 +18,8 @@ package Pod::Loom;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.06';
-# This file is part of Pod-Loom 0.06 (January 12, 2013)
+our $VERSION = '0.07';
+# This file is part of Pod-Loom 0.07 (March 22, 2014)
 
 use Moose 0.65; # attr fulfills requires
 use Carp qw(croak);
@@ -124,7 +124,11 @@ sub weave
 sub _has_pod_events
 {
   my $pe = Pod::Loom::_EventCounter->new;
-  $pe->read_string($_[1]);
+  # We can't use read_string, because that treats the string as
+  # encoded in UTF-8, for which some byte sequences aren't valid.
+  open my $handle, '<:encoding(iso-8859-1)', \$_[1]
+      or die "error opening string for reading: $!";
+  $pe->read_handle($handle);
 
   $pe->events;
 } # end _has_pod_events
@@ -144,9 +148,9 @@ Pod::Loom - Weave pseudo-POD into real POD
 
 =head1 VERSION
 
-This document describes version 0.06 of
-Pod::Loom, released January 12, 2013
-as part of Pod-Loom version 0.06.
+This document describes version 0.07 of
+Pod::Loom, released March 22, 2014
+as part of Pod-Loom version 0.07.
 
 =head1 WARNING
 
@@ -287,11 +291,11 @@ or through the web interface at
 L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom >>.
 
 You can follow or contribute to Pod-Loom's development at
-L<< http://github.com/madsen/pod-loom >>.
+L<< https://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Christopher J. Madsen.
+This software is copyright (c) 2014 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

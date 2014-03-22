@@ -19,7 +19,7 @@ package Pod::Loom::Template::Default;
 
 use 5.008;
 our $VERSION = '0.05';
-# This file is part of Pod-Loom 0.06 (January 12, 2013)
+# This file is part of Pod-Loom 0.07 (March 22, 2014)
 
 use Moose;
 extends 'Pod::Loom::Template';
@@ -285,8 +285,8 @@ Pod::Loom::Template::Default - Default template for Pod::Loom
 =head1 VERSION
 
 This document describes version 0.05 of
-Pod::Loom::Template::Default, released January 12, 2013
-as part of Pod-Loom version 0.06.
+Pod::Loom::Template::Default, released March 22, 2014
+as part of Pod-Loom version 0.07.
 
 =head1 DESCRIPTION
 
@@ -500,11 +500,11 @@ or through the web interface at
 L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Pod-Loom >>.
 
 You can follow or contribute to Pod-Loom's development at
-L<< http://github.com/madsen/pod-loom >>.
+L<< https://github.com/madsen/pod-loom >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Christopher J. Madsen.
+This software is copyright (c) 2014 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
