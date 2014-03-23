@@ -19,7 +19,7 @@ package Pod::Loom::Template::Default;
 
 use 5.008;
 our $VERSION = '0.05';
-# This file is part of Pod-Loom 0.07 (March 22, 2014)
+# This file is part of Pod-Loom 0.08 (March 23, 2014)
 
 use Moose;
 extends 'Pod::Loom::Template';
@@ -285,8 +285,8 @@ Pod::Loom::Template::Default - Default template for Pod::Loom
 =head1 VERSION
 
 This document describes version 0.05 of
-Pod::Loom::Template::Default, released March 22, 2014
-as part of Pod-Loom version 0.07.
+Pod::Loom::Template::Default, released March 23, 2014
+as part of Pod-Loom version 0.08.
 
 =head1 DESCRIPTION
 

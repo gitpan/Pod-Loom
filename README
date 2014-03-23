@@ -1,4 +1,4 @@
-Pod-Loom version 0.07, released March 22, 2014
+Pod-Loom version 0.08, released March 23, 2014
 
 
 Pod::Loom extracts all the POD sections from Perl code, passes the POD
@@ -35,11 +35,12 @@ DEPENDENCIES
 
 
 CHANGES
-    Here's what's new in version 0.07 of Pod-Loom:
+    Here's what's new in version 0.08 of Pod-Loom:
     (See the file "Changes" for the full revision history.)
 
-	- Make POD encoded in Latin-1 work with newer versions of
-	  Pod::Eventual, which treat strings as UTF-8 by default
+	- No functional changes
+	- Change 10-weave.t to work around bug in MetaCPAN indexer:
+	  https://github.com/CPAN-API/cpan-api/issues/307
 
 
 

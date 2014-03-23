@@ -19,7 +19,7 @@ package Pod::Loom::Template::Identity;
 
 use 5.008;
 our $VERSION = '0.03';
-# This file is part of Pod-Loom 0.07 (March 22, 2014)
+# This file is part of Pod-Loom 0.08 (March 23, 2014)
 
 use strict;
 use warnings;
@@ -53,8 +53,8 @@ Pod::Loom::Template::Identity - Do-nothing template for Pod::Loom
 =head1 VERSION
 
 This document describes version 0.03 of
-Pod::Loom::Template::Identity, released March 22, 2014
-as part of Pod-Loom version 0.07.
+Pod::Loom::Template::Identity, released March 23, 2014
+as part of Pod-Loom version 0.08.
 
 =head1 DESCRIPTION
 

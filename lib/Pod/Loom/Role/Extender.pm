@@ -19,7 +19,7 @@ package Pod::Loom::Role::Extender;
 
 use 5.008;
 our $VERSION = '0.03';
-# This file is part of Pod-Loom 0.07 (March 22, 2014)
+# This file is part of Pod-Loom 0.08 (March 23, 2014)
 
 use Moose::Role;
 #---------------------------------------------------------------------
@@ -75,8 +75,8 @@ Pod::Loom::Role::Extender - Role to simplify extending a template
 =head1 VERSION
 
 This document describes version 0.03 of
-Pod::Loom::Role::Extender, released March 22, 2014
-as part of Pod-Loom version 0.07.
+Pod::Loom::Role::Extender, released March 23, 2014
+as part of Pod-Loom version 0.08.
 
 =head1 SYNOPSIS
 

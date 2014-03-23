@@ -18,8 +18,8 @@ package Pod::Loom;
 #---------------------------------------------------------------------
 
 use 5.008;
-our $VERSION = '0.07';
-# This file is part of Pod-Loom 0.07 (March 22, 2014)
+our $VERSION = '0.08';
+# This file is part of Pod-Loom 0.08 (March 23, 2014)
 
 use Moose 0.65; # attr fulfills requires
 use Carp qw(croak);
@@ -148,9 +148,9 @@ Pod::Loom - Weave pseudo-POD into real POD
 
 =head1 VERSION
 
-This document describes version 0.07 of
-Pod::Loom, released March 22, 2014
-as part of Pod-Loom version 0.07.
+This document describes version 0.08 of
+Pod::Loom, released March 23, 2014
+as part of Pod-Loom version 0.08.
 
 =head1 WARNING
 
